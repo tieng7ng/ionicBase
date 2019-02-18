@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { MenuController, ModalController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
-
+import { NGXLogger } from 'ngx-logger';
 
 //=====
 // Pages
@@ -34,7 +34,9 @@ export class AppareilsPage {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private log: NGXLogger
+
   ) { }
 
   ionViewWillEnter() {
@@ -44,19 +46,12 @@ export class AppareilsPage {
   }
 
 
-  ngOnInit() {    
-    this.appareilsSubscription = this.appareilsService.appareils$.subscribe(
-      (appareils: Appareil[]) => {
-        this.appareilsList = appareils.slice();
-      }
-    );
-    console.log('>>> ngOnInit appareilsList', this.appareilsList);
-    
-    this.appareilsService.emitAppareils();
+  ngOnInit() {
+    this.onFetchList();
   }
 
   ngOnDestroy() {
-    this.appareilsSubscription.unsubscribe();
+//    this.appareilsSubscription.unsubscribe();
   }
 
   /**
@@ -87,18 +82,22 @@ export class AppareilsPage {
   /**
    * 
    */
-  
+
   onSaveList() {
+    this.log.debug('appareils - onSaveList');
+
     let loader = this.loadingCtrl.create({
       content: 'Sauvegarde en cours…'
     });
     loader.present();
-    /*
-    this.appareilsService.saveData().then(
+
+    this.appareilsService.saveAllAppareils().subscribe(
+      //=====
+      // subscribe
       () => {
         loader.dismiss();
         this.toastCtrl.create({
-          message: 'Données sauvegardées !',
+          message: 'Données enregistrées !',
           duration: 3000,
           position: 'bottom'
         }).present();
@@ -111,8 +110,9 @@ export class AppareilsPage {
           position: 'bottom'
         }).present();
       }
+      // subscribe
+      //=====
     );
-    */
   }
 
   onFetchList() {
@@ -121,6 +121,8 @@ export class AppareilsPage {
     });
     loader.present();
     this.appareilsService.retrieveData().subscribe(
+      //=====
+      // subscribe
       (appareilsListLoc) => {
         loader.dismiss();
         // For display
@@ -128,7 +130,7 @@ export class AppareilsPage {
 
         // For store in current
         this.appareilsService.appareilsList = appareilsListLoc;
-        
+
         this.toastCtrl.create({
           message: 'Données récupérées !',
           duration: 3000,
@@ -143,7 +145,10 @@ export class AppareilsPage {
           position: 'bottom'
         }).present();
       }
+      // subscribe
+      //=====
     );
+
   }
-  
+
 }

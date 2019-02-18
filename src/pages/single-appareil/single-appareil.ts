@@ -64,4 +64,12 @@ export class SingleAppareilPage {
     this.appareil.endTime = '';
     this.dismissModal();
   }
+
+  /**
+   * display pop
+   */
+  ionViewDidLoad() {
+    console.log();
+  }
+
 }

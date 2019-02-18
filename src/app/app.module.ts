@@ -8,6 +8,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { firebaseConfig } from './credentials';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 
 //=====
@@ -51,7 +52,10 @@ import { AuthService } from '../services/auth.service';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
-
+    LoggerModule.forRoot({/*serverLoggingUrl: '/api/logs', */
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.ERROR
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
