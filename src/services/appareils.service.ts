@@ -139,7 +139,8 @@ export class AppareilsService {
   }
 
   addAppareil(appareil: Appareil) {
-    this.appareilsCollection.add(appareil);
+//    this.appareilsCollection.add(appareil);
+    this.appareilsList.push(appareil);
   }
 
   emitAppareils() {
