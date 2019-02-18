@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // creation and utility methods
-import { Observable, Subject, pipe } from 'rxjs';
+import { Observable, Subject, pipe, observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase';
@@ -24,7 +24,7 @@ export class AppareilsService {
     private fireStore: AngularFirestore,
     private log: NGXLogger
   ) {
-//    this.appareilsCollection = this.fireStore.collection('appareils');
+    //    this.appareilsCollection = this.fireStore.collection('appareils');
     this.appareilsCollection = this.fireStore.collection('appareils', ref => ref.orderBy('name'));
 
   }
@@ -61,6 +61,7 @@ export class AppareilsService {
 
 
   retrieveData(): Observable<Appareil[]> {
+    this.log.debug('appareils.service - retrieveData');
 
     let profcollection: any[] = [];
 
@@ -72,6 +73,8 @@ export class AppareilsService {
         return changes.map(a => {
           const data = a.payload.doc.data() as Appareil;
           const id = a.payload.doc.id;
+          // delete ID
+          delete(data.id); 
           return { id, ...data };
         });
       }));
@@ -80,36 +83,18 @@ export class AppareilsService {
 
       // build appareil list
       docId.subscribe(docs => {
-        docs.forEach(doc => {
-          tabAppareil.push(doc);
-          console.log(doc);
-        });
-
+        if (tabAppareil.length == 0) {
+          docs.forEach(doc => {
+            tabAppareil.push(doc);
+            console.log(doc);
+          });
+        }
         this.appareilsList = tabAppareil;
         observer.next(tabAppareil);
       });
       // Appareils list
       //===========================
 
-      //      console.log('>>> tabAppareil', tabAppareil);
-      //      observer.next(tabAppareil);
-      /*
-      
-      
-            appareilsDoc.valueChanges().subscribe((profile: Appareil[]) => {
-              profcollection = profile;
-      
-              console.log('>>>> retrieveData - return ', profcollection);
-              for (var property1 in profcollection) {
-                console.log(profcollection[property1]);
-              }
-      
-              console.log('>>> profcollection', profcollection);
-      
-              // retourne la donnée
-              observer.next(profcollection);
-            });
-            */
     });
 
   }
@@ -119,14 +104,13 @@ export class AppareilsService {
     this.log.debug('appareils.service - saveAllAppareils');
     return new Observable((observer) => {
       this.appareilsList.forEach(doc => {
-        console.log('>>> saveAllAppareils', doc);
+        this.log.debug('>>> saveAllAppareils', doc);
         if (doc.id) {
           this.saveAppareil(doc.id, doc);
         } else {
           this.addAppareil(doc);
         }
       });
-      console.log('>>> saveAllAppareils');
       observer.next(true);
     });
   }
@@ -138,9 +122,15 @@ export class AppareilsService {
 
   }
 
-  addAppareil(appareil: Appareil) {
-//    this.appareilsCollection.add(appareil);
-    this.appareilsList.push(appareil);
+  addAppareil(appareil: Appareil): Observable<boolean> {
+    return new Observable((observer) => {
+      this.log.debug('AppareilsService', appareil, JSON.parse(JSON.stringify(appareil)));
+      
+//      appareilLoc = JSON.stringify(appareil);
+      this.appareilsCollection.add(JSON.parse(JSON.stringify(appareil)));
+      this.appareilsList.push(appareil);
+      observer.next(true);
+    })
   }
 
   emitAppareils() {

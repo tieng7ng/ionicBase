@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NGXLogger } from 'ngx-logger';
 
 import { Appareil } from '../../models/Appareil';
 
 import { AppareilsService } from '../../services/appareils.service';
+import { app } from 'firebase';
 
 
 @Component({
@@ -18,6 +20,7 @@ export class AppareilFormPage implements OnInit {
   appareilForm: FormGroup;
 
   constructor(
+    private log: NGXLogger,
     private appareilsService: AppareilsService,
     private navCtrl: NavController,
     private formBuilder: FormBuilder
@@ -58,7 +61,14 @@ export class AppareilFormPage implements OnInit {
     for (let control of this.getDescriptionArray().controls) {
       newAppareil.description.push(control.value);
     }
-    this.appareilsService.addAppareil(newAppareil);
+    this.appareilsService.addAppareil(newAppareil).subscribe(
+      (Boolean) => {
+        this.log.debug('ADD OK', newAppareil);
+      },
+      (error) => {
+        this.log.debug(error);
+      }
+    );
     this.navCtrl.pop();
   }
 }

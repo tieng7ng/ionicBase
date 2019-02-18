@@ -25,11 +25,13 @@ export class SingleAppareilPage {
   }
 
   ngOnInit() {
-    console.log('>>> single-appareil', this.navParams.get('appareil'));
+    console.log('>>> single-appareil', this.navParams.get('index'));
     // Param send : page AppareilPage - function onLoadAppareil
     this.index = this.navParams.get('index');
 
     this.appareil = this.appareilsService.appareilsList[this.index];
+    console.log(this.appareil);
+    
   }
 
   /**
