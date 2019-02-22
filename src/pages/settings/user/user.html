@@ -1,0 +1,49 @@
+<!--
+  Generated template for the ConfigUserPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ user?.email }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <p>{{ user?.name.first }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <p>{{ user?.name.last }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-item-divider>Address</ion-item-divider>
+  <ion-grid *ngFor="let address of user?.address; let ind = index">
+    <ion-row>
+      <ion-col col-12>
+        <p>{{ address.street }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <p>{{ address.city }}</p>
+      </ion-col>
+      <ion-col col-6>
+        <p>{{ address.country }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button full (click)="buttonEditUser()">Edit</button>
+
+
+</ion-content>

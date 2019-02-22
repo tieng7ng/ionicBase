@@ -74,7 +74,7 @@ export class AppareilsService {
           const data = a.payload.doc.data() as Appareil;
           const id = a.payload.doc.id;
           // delete ID
-          delete(data.id); 
+          delete(data._id); 
           return { id, ...data };
         });
       }));
@@ -105,8 +105,8 @@ export class AppareilsService {
     return new Observable((observer) => {
       this.appareilsList.forEach(doc => {
         this.log.debug('>>> saveAllAppareils', doc);
-        if (doc.id) {
-          this.saveAppareil(doc.id, doc);
+        if (doc._id) {
+          this.saveAppareil(doc._id, doc);
         } else {
           this.addAppareil(doc);
         }

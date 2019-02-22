@@ -6,8 +6,8 @@ import { NGXLogger } from 'ngx-logger';
 
 //=====
 // Pages
-import { SingleAppareilPage } from '../single-appareil/single-appareil';
-import { AppareilFormPage } from '../appareil-form/appareil-form';
+import { AppareilSinglePage } from './appareil-single/appareil-single';
+import { AppareilFormPage } from './appareil-form/appareil-form';
 // Pages
 //=====
 
@@ -59,7 +59,7 @@ export class AppareilsPage {
    * @param index : position
    */
   onLoadAppareil(index: number) {
-    let modal = this.modalCtrl.create(SingleAppareilPage, { index: index });
+    let modal = this.modalCtrl.create(AppareilSinglePage, { index: index });
     // Affichage de la page
     modal.present();
   }
@@ -133,7 +133,7 @@ export class AppareilsPage {
 
         this.toastCtrl.create({
           message: 'Données récupérées !',
-          duration: 3000,
+          duration: 1000,
           position: 'bottom'
         }).present();
       },

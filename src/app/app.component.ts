@@ -10,10 +10,13 @@ import { Observable, Subject, pipe } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
+import { AuthService } from '../services/auth.service';
 
 import { HomePage } from '../pages/home/home';
 import { AuthPage } from '../pages/auth/auth';
 import { OptionsPage } from '../pages/options/options';
+import { AppareilsPage } from '../pages/appareils/appareils';
+import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
@@ -26,6 +29,8 @@ export class MyApp {
   tabsPage: any = TabsPage;
   optionsPage: any = OptionsPage;
   authPage: any = AuthPage;
+  appareilsPage: any = AppareilsPage;
+  settingsPage: any = SettingsPage;
   // Pages
   //=====
 
@@ -40,6 +45,7 @@ export class MyApp {
     private menuCtrl: MenuController,
     private fireStore: AngularFirestore,
     private afAuth: AngularFireAuth,
+    private authService: AuthService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -53,8 +59,12 @@ export class MyApp {
           if (user) {
             //====
             // user sign in
+console.log('>>> app component>>>>>>>>>>>>>>>>>>>>>>>>>>>>', user.email);
+
+            this.authService.email = user.email;
             this.isAuth = true;
             this.content.setRoot(TabsPage);
+            this.onNavigate(TabsPage);
             // user sign in
             //====
           } else {
@@ -77,7 +87,7 @@ export class MyApp {
    * @param data 
    */
   onNavigate(page: any, data?: {}) {
-    console.log('>>> app component - onNavigate');
+    console.log('>>> app component - onNavigate', page);
     this.content.setRoot(page, data ? data : null);
     this.menuCtrl.close();
   }

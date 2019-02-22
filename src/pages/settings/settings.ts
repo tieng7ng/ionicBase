@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 import { AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+
+import { AuthService } from '../../services/auth.service'
+
+import { UserPage } from './user/user';
 
 @Component({
   selector: 'page-settings',
@@ -9,7 +14,9 @@ import { AlertController } from 'ionic-angular';
 export class SettingsPage {
 
   constructor(
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private authService: AuthService
   ) { }
 
   onToggleLights() {
@@ -35,4 +42,8 @@ export class SettingsPage {
     alert.present();
   }
 
+  onLoadPage(pageName: string) {
+    this.navCtrl.push(UserPage);
+
+  }
 }

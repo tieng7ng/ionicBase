@@ -1,5 +1,5 @@
 export class Appareil {
-  id: string;
+  _id: string;
   description: string[];
   isOn: boolean;
   startTime: string;

@@ -1,7 +1,8 @@
 import * as firebase from 'firebase';
 
 export class AuthService {
-  isAuth = false;
+  isAuth:boolean = false;
+  email:string;
 
   constructor() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -25,6 +26,7 @@ export class AuthService {
       firebase.auth().createUserWithEmailAndPassword(email, password).then(
         (user) => {
           console.log(user);
+          this.email = email;
           resolve(user);
         },
         (error) => {
@@ -44,6 +46,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       firebase.auth().signInWithEmailAndPassword(email, password).then(
         (user) => {
+          this.email = email;
           resolve(user);
         },
         (error) => {

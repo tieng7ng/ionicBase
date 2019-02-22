@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup, NgForm } from '@angular/forms';
 
-import { Appareil } from '../../models/Appareil';
-import { AppareilsService } from '../../services/appareils.service';
+import { Appareil } from '../../../models/Appareil';
+import { AppareilsService } from '../../../services/appareils.service';
 
 
 @Component({
-  selector: 'page-single-appareil',
-  templateUrl: 'single-appareil.html',
+  selector: 'page-appareil-single',
+  templateUrl: 'appareil-single.html',
 })
 
-export class SingleAppareilPage {
+export class AppareilSinglePage {
 
   public index: number;
   public appareil: Appareil;

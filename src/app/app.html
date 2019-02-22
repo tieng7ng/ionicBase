@@ -7,7 +7,12 @@
   <ion-content>
 
     <ion-list>
-      <button ion-item icon-start (click)="onNavigate(tabsPage)" *ngIf="isAuth">
+        <button ion-item icon-start (click)="onNavigate(tabsPage)" *ngIf="isAuth">
+            <ion-icon name="settings"></ion-icon>
+            Settings
+          </button>
+    
+      <button ion-item icon-start (click)="onNavigate(appareilsPage)" *ngIf="isAuth">
         <ion-icon name="power"></ion-icon>
         Appareils
       </button>

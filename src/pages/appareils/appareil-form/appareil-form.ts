@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NGXLogger } from 'ngx-logger';
 
-import { Appareil } from '../../models/Appareil';
+import { Appareil } from '../../../models/Appareil';
 
-import { AppareilsService } from '../../services/appareils.service';
+import { AppareilsService } from '../../../services/appareils.service';
 import { app } from 'firebase';
 
 
@@ -18,6 +18,7 @@ export class AppareilFormPage implements OnInit {
   appareilsList: Appareil[];
 
   appareilForm: FormGroup;
+  appareilcontrol: FormControl;
 
   constructor(
     private log: NGXLogger,
@@ -32,11 +33,13 @@ export class AppareilFormPage implements OnInit {
 
   ngOnInit() {
     this.initForm();
+//    this.onAddDescription();
   }
 
   initForm() {
+    this.appareilcontrol = new FormControl(null, Validators.required);
     this.appareilForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: this.appareilcontrol,
       description: this.formBuilder.array([])
     });
   }
@@ -49,6 +52,7 @@ export class AppareilFormPage implements OnInit {
     console.log('>>> appareil form : onAddDescription');
     let newControl = this.formBuilder.control('');
     this.getDescriptionArray().controls.push(newControl);
+    this.appareilForm.get('name')
   }
 
   onRemoveDescription(index: number) {
